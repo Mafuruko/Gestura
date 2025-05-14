@@ -234,23 +234,37 @@ footer {
   margin-bottom: 16px;
   border: none;
   border-top: 2px solid #e07958;
-  width: 200px;
+  width: 100px;
   align-self: center;
 }
 
 .dictionary-section {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 60px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 80px 120px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dictionary-section {
+    grid-template-columns: 1fr;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+
+  .video-box iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
 }
 
 .dictionary-box {
   background-color: #fbf7f4;
   border-radius: 40px;
   padding: 40px;
-  width: 300px;
+  width: 550px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -316,9 +330,9 @@ footer {
 }
 
 .video-box iframe {
-  width: 400px;
-  height: 260px;
-  border-radius: 12px;
+  width: 665px;
+  height: 375px;
+  border-radius: 20px;
 }
 
 .video-caption {
