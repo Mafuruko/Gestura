@@ -100,6 +100,14 @@ nav {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border: white;
+  gap: 8px;
+  display: flex;
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
 }
 
 .action-btn:hover {
