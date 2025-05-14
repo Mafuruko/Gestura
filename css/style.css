@@ -17,13 +17,33 @@ body {
 /* Navigation */
 nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   background-color: #fbf7f4;
   padding: 16px 60px;
   border-radius: 100px;
   margin: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 32px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img.logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-grow: 1;
 }
 
 .nav-links {
@@ -52,12 +72,38 @@ nav {
 }
 
 .register-btn {
+  display: inline-block; /* Enables transform and hover effects */
   background-color: #003087;
   color: #fff;
+  transition: all 0.2s ease-in-out;
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none; /* Removes underline */
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(77, 91, 238, 0.2);
 }
 
 .login-btn {
+  display: inline-block;
   color: #003087;
+  border: 2px solid #003087; /* Tambahkan ini agar terlihat seperti tombol outline */
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 48, 135, 0.2);
 }
 
 /* Hero Section */
