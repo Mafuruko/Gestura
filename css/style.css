@@ -1,3 +1,19 @@
+/* fonts */
+@font-face {
+  font-family: "CowraFreeRegular";
+  src: url("../fonts/CowraFreeRegular-R9316.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "BeautiqueDisplay";
+  src: url("../fonts/BeautiqueDisplay-Regular.otf") format("truetype");
+}
+
+@font-face {
+  font-family: "Sensation";
+  src: url("../fonts/Sansation-Regular.ttf") format("truetype");
+}
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -20,7 +36,7 @@ nav {
   align-items: center;
   justify-content: space-between;
   background-color: #fbf7f4;
-  padding: 16px 60px;
+  padding: 10px 60px;
   border-radius: 100px;
   margin: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -46,160 +62,8 @@ nav {
   flex-grow: 1;
 }
 
-.nav-links {
-  display: flex;
-  gap: 32px;
-}
-
 .nav-links a {
-  text-decoration: none;
-  color: #c6492d;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.auth-buttons {
-  display: flex;
-  gap: 16px;
-}
-
-.auth-buttons a {
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: 500;
-  font-size: 16px;
-}
-
-.register-btn {
-  display: inline-block; /* Enables transform and hover effects */
-  background-color: #003087;
-  color: #fff;
-  transition: all 0.2s ease-in-out;
-  border-radius: 100px;
-  padding: 10px 20px;
-  font-weight: 500;
-  font-size: 16px;
-  text-decoration: none; /* Removes underline */
-}
-
-.register-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(77, 91, 238, 0.2);
-}
-
-.login-btn {
-  display: inline-block;
-  color: #003087;
-  border: 2px solid #003087; /* Tambahkan ini agar terlihat seperti tombol outline */
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-weight: 500;
-  font-size: 16px;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  background-color: transparent;
-}
-
-.login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 48, 135, 0.2);
-}
-
-/* Hero Section */
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80px 20px;
-  text-align: center;
-  flex-grow: 1;
-}
-
-.logo {
-  font-family: "Crimson Text", serif;
-  font-size: 64px;
-  color: #c6492d;
-  margin-bottom: 16px;
-}
-
-.tagline {
-  font-family: "Crimson Text", serif;
-  font-size: 20px;
-  color: #c6492d;
-  margin-bottom: 48px;
-}
-
-.action-buttons {
-  color: white;
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.action-btn {
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-weight: 500;
-  font-size: 16px;
-  min-width: 180px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: white;
-  gap: 8px;
-  display: flex;
-}
-
-.action-btn svg {
-  width: 18px;
-  height: 18px;
-  vertical-align: middle;
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(77, 91, 238, 0.2);
-}
-
-.upload-btn {
-  background-color: #003087;
-  color: white;
-}
-
-.record-btn {
-  background-color: transparent;
-  border: 2px solid #003087;
-  color: #003087;
-}
-
-.description {
-  font-size: 14px;
-  margin-top: 24px;
-  color: #c6492d;
-  /* border-top: 1px solid #e07958; */
-  padding-top: 8px;
-}
-
-/* Footer */
-footer {
-  background-color: #e64c2b;
-  color: white;
-  text-align: center;
-  padding: 30px;
-  font-size: 14px;
-  margin-top: auto;
-}
-
-.divider {
-  margin-top: 24px;
-  margin-bottom: 16px;
-  border: none;
-  border-top: 2px solid #e07958; /* Orange tone from the footer */
-  width: 200px;
-  align-self: center;
-}
-
-.nav-links a {
+  font-family: "Sensation", sans-serif;
   position: relative;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -228,4 +92,147 @@ footer {
 .nav-links a.nav-active::after {
   width: 100%;
   box-shadow: none;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.auth-buttons a {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.register-btn {
+  font-family: "BeautiqueDisplay", sans-serif;
+  background-color: #003087;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(77, 91, 238, 0.2);
+}
+
+.login-btn {
+  font-family: "BeautiqueDisplay", sans-serif;
+  color: #003087;
+  border: 2px solid #003087;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 48, 135, 0.2);
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.logo {
+  font-family: "CowraFreeRegular", serif;
+  font-size: 80px;
+  color: #c6492d;
+  margin-bottom: 16px;
+}
+
+.tagline {
+  font-family: "BeautiqueDisplay", sans-serif;
+  font-size: 20px;
+  color: #c6492d;
+  margin-bottom: 48px;
+}
+
+.action-buttons {
+  color: white;
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.action-btn {
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  min-width: 180px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: white;
+  gap: 8px;
+  display: flex;
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(77, 91, 238, 0.2);
+}
+
+.upload-btn {
+  font-family: "BeautiqueDisplay", sans-serif;
+  background-color: #003087;
+  color: white;
+}
+
+.record-btn {
+  font-family: "BeautiqueDisplay", sans-serif;
+  background-color: transparent;
+  border: 2px solid #003087;
+  color: #003087;
+}
+
+.description {
+  font-family: "Sensation", sans-serif;
+  font-size: 14px;
+  margin-top: 24px;
+  color: #c6492d;
+  padding-top: 8px;
+}
+
+/* Footer */
+footer {
+  background-color: #e64c2b;
+  color: white;
+  text-align: center;
+  padding: 30px;
+  font-size: 14px;
+  margin-top: auto;
+}
+
+.divider {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  border: none;
+  border-top: 2px solid #e07958;
+  width: 200px;
+  align-self: center;
 }
