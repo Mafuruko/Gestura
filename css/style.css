@@ -220,6 +220,7 @@ nav {
 
 /* Footer */
 footer {
+  font-family: "Sensation", sans-serif;
   background-color: #e64c2b;
   color: white;
   text-align: center;
@@ -235,4 +236,94 @@ footer {
   border-top: 2px solid #e07958;
   width: 200px;
   align-self: center;
+}
+
+.dictionary-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px;
+  flex-wrap: wrap;
+}
+
+.dictionary-box {
+  background-color: #fbf7f4;
+  border-radius: 40px;
+  padding: 40px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dictionary-title {
+  font-family: "BeautiqueDisplay", serif;
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: #c6492d;
+}
+
+.search-bar {
+  display: flex;
+  width: 100%;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  font-size: 14px;
+  background-color: #4a74b3;
+  color: white;
+}
+
+.search-bar input::placeholder {
+  color: #d6d6d6;
+}
+
+.search-bar .search-icon {
+  background-color: #003087;
+  color: white;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.dictionary-list {
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.dictionary-list p {
+  font-family: "Sensation", sans-serif;
+  font-size: 14px;
+  padding: 8px 0;
+  text-align: center;
+  border-bottom: 1px solid #003087;
+  color: #c6492d;
+  cursor: pointer;
+}
+
+.video-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.video-box iframe {
+  width: 400px;
+  height: 260px;
+  border-radius: 12px;
+}
+
+.video-caption {
+  font-family: "Sensation", sans-serif;
+  font-size: 20px;
+  margin-top: 12px;
+  color: #e64c2b;
 }
