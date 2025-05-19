@@ -524,3 +524,7 @@ footer {
   color: #d25b30;
   text-decoration: none;
 }
+
+.create-account:hover {
+  text-decoration: underline;
+}
