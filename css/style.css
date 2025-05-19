@@ -432,7 +432,7 @@ footer {
   display: flex;
   align-items: center;
   background-color: rgba(1, 64, 141, 0.8); /* transparent blue */
-  border-radius: 1rem;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: inset -1px 0 4px rgba(0, 0, 0, 0.2);
   margin-bottom: 1rem;
@@ -501,7 +501,7 @@ footer {
   font-size: 15px;
 }
 
-.login-btn {
+.login-btn-login {
   font-family: "Sensation", sans-serif;
   background-color: #f04b2f;
   border: none;
@@ -509,5 +509,22 @@ footer {
   padding: 16px 60px;
   border-radius: 50px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
+  font-size: 16px;
+}
+
+.login-btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 48, 135, 0.2);
+}
+
+.create-account {
+  font-family: "Sensation", sans-serif;
+  color: #d25b30;
+  text-decoration: none;
+}
+
+.create-account:hover {
+  text-decoration: underline;
 }
