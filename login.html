@@ -21,40 +21,37 @@
     >
       <section
         style="
-          background-color: #fefaf6;
-          border-radius: 2rem;
-          padding: 3rem 2rem;
+          background-color: #f2efea;
+          border-radius: 80px;
+          padding: 60px 30px 30px 30px;
           box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.1);
           width: 100%;
-          max-width: 400px;
+          height: 100%;
+          max-width: 450px;
+          max-height: 500px;
           position: relative;
           text-align: center;
         "
       >
         <!-- Avatar Circle -->
-        <div
-          style="
-            background-color: #f04b2f;
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-          "
-        >
-          <i class="fas fa-user fa-2x" style="color: white"></i>
+        <div>
+          <i class="avatar-circle" style="color: white"
+            ><script src="https://cdn.lordicon.com/lordicon.js"></script>
+            <lord-icon
+              src="https://cdn.lordicon.com/kdduutaw.json"
+              trigger="loop"
+              state="hover-looking-around"
+              colors="primary:#f2efea,secondary:#f2efea"
+              style="width: 100px; height: 100px"
+            >
+            </lord-icon
+          ></i>
         </div>
 
-        <h2 style="color: #c0361c; margin-top: 60px">Log in</h2>
-        <p style="color: #c0361c; font-size: 0.9rem; margin-bottom: 1.5rem">
-          Unlock more features by gaining full access to learn and explore
-          Gestura.
+        <h2 class="login-form">Log in</h2>
+        <p class="login-description">
+          Unlock more features by gaining full <br />
+          access to learn and explore Gestura.
         </p>
 
         <!-- Email Input -->
@@ -88,26 +85,13 @@
             ><input type="checkbox" style="margin-right: 5px" />Remember
             me</label
           >
-          <a href="#" style="color: #c0361c; text-decoration: none"
+          <a href="register.html" style="color: #c0361c; text-decoration: none"
             >Create an Account?</a
           >
         </div>
 
         <!-- Login Button -->
-        <button
-          style="
-            background-color: #f04b2f;
-            border: none;
-            color: white;
-            padding: 0.6rem 2rem;
-            border-radius: 1.5rem;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-          "
-        >
-          Log in
-        </button>
+        <button class="login-btn">Log in</button>
       </section>
     </main>
 
@@ -120,6 +104,7 @@
       "
     >
       <p>&copy; Gestura 2025</p>
+      <a href="https://lordicon.com/"></a>
     </footer>
   </body>
 </html>

@@ -431,7 +431,7 @@ footer {
 .input-group {
   display: flex;
   align-items: center;
-  background-color: #00449e;
+  background-color: rgba(1, 64, 141, 0.8); /* transparent blue */
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: inset -1px 0 4px rgba(0, 0, 0, 0.2);
@@ -439,7 +439,7 @@ footer {
 }
 
 .icon-container {
-  background-color: #00377d;
+  background-color: #01408d; /* solid blue */
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
@@ -452,6 +452,7 @@ footer {
 }
 
 .input-group input {
+  font-family: "Sensation", sans-serif;
   flex: 1;
   padding: 0.75rem;
   background: none;
@@ -462,4 +463,51 @@ footer {
   ::placeholder {
     color: #c7c7c7;
   }
+}
+.avatar-circle {
+  background-color: #e75234;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -65px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login-form {
+  font-family: "BeautiqueDisplay", serif;
+  color: #e75234;
+  margin-top: 12px;
+  font-size: 32px;
+}
+.login-description {
+  font-family: "Sensation", sans-serif;
+  color: #e75234;
+  font-size: 16px;
+  padding-top: 1px;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+
+.input-group input::placeholder {
+  color: rgba(242, 239, 234, 0.4); /* F2EFEA with 40% opacity */
+  font-family: "Sensation", sans-serif;
+  font-size: 15px;
+}
+
+.login-btn {
+  font-family: "Sensation", sans-serif;
+  background-color: #f04b2f;
+  border: none;
+  color: white;
+  padding: 16px 60px;
+  border-radius: 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
