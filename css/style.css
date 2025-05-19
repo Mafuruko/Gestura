@@ -342,7 +342,6 @@ footer {
   color: #e64c2b;
 }
 
-
 .faq-section {
   display: flex;
   justify-content: center;
@@ -359,8 +358,6 @@ footer {
   margin-bottom: 32px;
   line-height: 1.2;
 }
-
-
 
 .faq-box {
   width: 500px;
@@ -393,17 +390,15 @@ footer {
   font-size: 14px;
   color: #333;
   margin-top: 12px;
-  
+
   max-height: 0;
   overflow: hidden;
   opacity: 0;
   padding: 0 20px;
   transform: translateY(-10px);
-  
-  transition: 
-    max-height 1.8s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 1.4s ease 0.3s,
-    padding 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+
+  transition: max-height 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 1.4s ease 0.3s, padding 1.6s cubic-bezier(0.16, 1, 0.3, 1),
     transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -412,10 +407,8 @@ footer {
   opacity: 1;
   padding: 20px;
   transform: translateY(0);
-  
-  transition: 
-    max-height 2s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 1.2s ease,
+
+  transition: max-height 2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease,
     padding 1.8s cubic-bezier(0.16, 1, 0.3, 1),
     transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -435,3 +428,38 @@ footer {
   transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.input-group {
+  display: flex;
+  align-items: center;
+  background-color: #00449e;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: inset -1px 0 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+}
+
+.icon-container {
+  background-color: #00377d;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container i {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 1rem;
+  ::placeholder {
+    color: #c7c7c7;
+  }
+}
