@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestura - Speak Through Hands, Understand Each Other</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* --- CSS for Dropdown Functionality --- */
+      .faq-question {
+        cursor: pointer; /* Indicates the question is clickable */
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        transition: max-height 0.4s ease-out, padding 0.3s ease-out, margin 0.3s ease-out;
+      }
+
+      .faq-answer.active {
+        max-height: 150px; /* Adjust if your answers are longer */
+        margin-top: 10px;
+        padding-top: 5px;
+        padding-bottom: 15px;
+        transition: max-height 0.4s ease-in, padding 0.3s ease-in, margin 0.3s ease-in;
+      }
+      /* ------------------------------------ */
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo-container"><a href="/"><img src="img/moon-1.png" alt="Gestura Logo" width="55px" height="55px" /></a> </div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/learn">Learn</a>
+        <a href="/history">History</a>
+        <a href="/faq" class="nav-active">FAQ</a>
+      </div>
+      <div class="auth-buttons" id="auth-buttons">
+        <a href="/register" class="register-btn">Register</a>
+        <a href="/login" class="login-btn">Log in</a>
+      </div>
+      <div class="auth-user" id="auth-user" style="display: none">
+        <span>Welcome, <span id="user-name">User</span>!</span>
+        <button
+          id="logout-btn"
+          style="
+            margin-left: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #f04b2f;
+          "
+        >
+          Logout
+        </button>
+        <i class="fas fa-user-circle"></i>
+      </div>
+    </nav>
+
+    <main>
+      <section class="faq-section">
+        <div class="faq-box">
+          <h2 class="faq-title">Frequently Asked Questions</h2>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>What is Gestura?</h3>
+              <span class="faq-toggle">−</span>
+            </div>
+            <p class="faq-answer active">
+              Gestura is a platform designed to help individuals learn and
+              communicate through sign language.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>How can I learn sign language?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              You can learn sign language through our interactive lessons,
+              videos, and practice exercises available on our platform.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>Is there a mobile app available?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>test?</h3>
+              <span class="faq-toggle">+</span>
+            </div>
+            <p class="faq-answer">
+              Yes, we have a mobile app available for both iOS and Android
+              devices. You can download it from the App Store or Google Play.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="logo-container">
+          <script src="https://cdn.lordicon.com/lordicon.js"></script>
+          <lord-icon
+            src="https://cdn.lordicon.com/jdgfsfzr.json"
+            trigger="loop"
+            delay="500"
+            stroke="light"
+            colors="primary:#c6492d,secondary:#c6492d"
+            style="width: 525px; height: 525px"
+          >
+          </lord-icon>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; Gestura 2025</p>
+    </footer>
+
+    <script>
+      // --- Authentication Script ---
+      const username = localStorage.getItem('username');
+      const authButtons = document.getElementById('auth-buttons');
+      const authUser = document.getElementById('auth-user');
+
+      if (username) {
+        document.getElementById('user-name').textContent = username;
+        authButtons.style.display = 'none';
+        authUser.style.display = 'flex';
+      } else {
+        authButtons.style.display = 'flex';
+        authUser.style.display = 'none';
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('username');
+        window.location.reload(); // refresh halaman jadi versi guest
+      });
+    </script>
+
+    <script>
+      // --- JavaScript for Dropdown Functionality ---
+      document.addEventListener('DOMContentLoaded', function () {
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+          const question = item.querySelector('.faq-question');
+          
+          question.addEventListener('click', () => {
+            const answer = item.querySelector('.faq-answer');
+            const toggle = item.querySelector('.faq-toggle');
+            
+            // Check if the clicked item is already active
+            const isAlreadyActive = answer.classList.contains('active');
+
+            // First, close all other answers to create an accordion effect
+            document.querySelectorAll('.faq-answer').forEach(ans => {
+              ans.classList.remove('active');
+            });
+            document.querySelectorAll('.faq-toggle').forEach(tgl => {
+              tgl.textContent = '+';
+            });
+
+            // If the clicked item was not already active, then open it.
+            // If it was active, the loop above has already closed it.
+            if (!isAlreadyActive) {
+              answer.classList.add('active');
+              toggle.textContent = '−';
+            }
+          });
+        });
+      });
+      // ------------------------------------------
+    </script>
+  </body>
+</html>
