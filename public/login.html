@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestura - Speak Through Hands, Understand Each Other</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+<!-- LOGIN SCRIPT -->
+
+  <body style="background-color: #ffe2df; font-family: 'Segoe UI', sans-serif">
+    <div style="padding: 20px 0 0 0">
+      <main
+        style="
+          min-height: 90vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <section
+          style="
+            background-color: #f2efea;
+            border-radius: 80px;
+            padding: 60px 50px 30px 50px;
+            box-shadow: 3px 6px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 100%;
+            max-width: 450px;
+            max-height: 500px;
+            position: relative;
+            text-align: center;
+          "
+        >
+          <!-- Avatar Circle -->
+          <div>
+            <i class="avatar-circle" style="color: white"
+              ><script src="https://cdn.lordicon.com/lordicon.js"></script>
+              <lord-icon
+                src="https://cdn.lordicon.com/kdduutaw.json"
+                trigger="loop"
+                state="hover-looking-around"
+                colors="primary:#f2efea,secondary:#f2efea"
+                style="width: 90px; height: 90px"
+              >
+              </lord-icon
+            ></i>
+          </div>
+
+          <h2 class="login-form">Log in</h2>
+          <p class="login-description">
+            Unlock more features by gaining full <br />
+            access to learn and explore Gestura.
+          </p>
+
+          <!-- Email Input -->
+          <div class="input-group">
+            <div class="icon-container">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <!-- <input type="email" placeholder="Email Account" /> -->
+             <!-- Email Input -->
+<input id="email" type="email" placeholder="Email Account" />
+          </div>
+
+          <!-- Password Input -->
+          <div class="input-group">
+            <div class="icon-container">
+              <i class="fas fa-lock"></i>
+            </div>
+            <input id="password" type="password" placeholder="Password" />
+          </div>
+
+          <!-- Options -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.7rem;
+              margin-bottom: 1.5rem;
+              padding: 0 0.2rem;
+              color: #d25b30;
+            "
+          >
+            <label
+              ><input type="checkbox" style="margin-right: 5px" />Remember
+              me</label
+            >
+            <a href="/register" class="create-account"
+              >Create an Account?</a
+            >
+          </div>
+
+          <!-- Login Button -->
+          <button class="login-btn-login">Log in</button>
+        </section>
+      </main>
+    </div>
+
+    <footer
+      style="
+        background-color: #f04b2f;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+      "
+    >
+      <p>&copy; Gestura 2025</p>
+      <a href="https://lordicon.com/"></a>
+    </footer>
+  </body>
+<script>
+  document.querySelector('.login-btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+      alert('Please fill in both email and password.');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem('username', data.username); // ✅ simpan username
+        // alert('Login successful!');
+        window.location.href = '/'; // redirect ke halaman login-success
+      } else {
+        alert(data.error || 'Login failed.');
+      }
+    } catch (error) {
+      alert('Server error. Please try again later.');
+      console.error('Login error:', error);
+    }
+  });
+</script>
+</html>
