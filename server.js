@@ -8,8 +8,8 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
  
-const User = require('./js/User');
-const Video = require('./js/Video');
+const User = require('./models/User');
+const Video = require('./models/Video');
 
 const app = express();
 app.use(bodyParser.json());
