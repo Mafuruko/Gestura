@@ -284,16 +284,20 @@ footer {
   }
 }
 
+
 .dictionary-box {
   background-color: #fbf7f4;
   border-radius: 40px;
   padding: 40px;
   width: 550px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
+
 
 .dictionary-title {
   font-family: "BeautiqueDisplay", serif;
@@ -553,6 +557,7 @@ footer {
   text-decoration: underline;
 }
 
+<<<<<<< Updated upstream:public/css/style.css
 .drop-zone {
   margin: 20px auto;
   padding: 40px;
@@ -624,3 +629,13 @@ footer {
           margin-left: auto; /* Pindahkan ke kanan jika ada hamburger */
         }
       }
+=======
+.side-by-side-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;    /* center horizontally */
+  align-items: center;        /* center vertically */
+  flex-wrap: wrap;
+  min-height: 30vh;          /* make container fill the full viewport height */
+}
+>>>>>>> Stashed changes:css/style.css
