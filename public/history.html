@@ -12,32 +12,152 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
       rel="stylesheet"
     />
+    <style>
+      /* Grid Layout Fix */
+      .history-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Ensure exactly 4 columns on larger screens */
+      @media (min-width: 1200px) {
+        .history-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1199px) {
+        .history-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (min-width: 480px) and (max-width: 767px) {
+        .history-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 479px) {
+        .history-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Fix for centering text in grid */
+      .history-grid.empty-state {
+        display: block !important;
+        text-align: center !important;
+      }
+
+      .history-grid.empty-state p {
+        text-align: center !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        grid-column: 1 / -1 !important;
+      }
+
+      /* Alternative fix - span across all columns */
+      .empty-message {
+        text-align: center !important;
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+      }
+
+      .history-item {
+        position: relative;
+      }
+
+      .video-wrapper {
+        position: relative;
+      }
+
+      .video-predict {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .prediction-text {
+        flex: 1;
+      }
+
+      .delete-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px;
+        flex-shrink: 0;
+      }
+
+      .delete-btn:hover {
+        transform: scale(1.1);
+      }
+
+      .delete-icon {
+        width: 20px;
+        height: 20px;
+      }
+    </style>
   </head>
   <body>
     <nav>
-      <div class="logo-container"><a href="/"><img src="img/moon-1.png" alt="Gestura Logo" width="55px" height="55px" /></a></div>
-      <div class="nav-links">
+      <div class="logo-container">
+        <a href="/">
+          <img
+            src="img/moon-1.png"
+            alt="Gestura Logo"
+            width="55px"
+            height="55px"
+          />
+        </a>
+      </div>
+
+      <!-- Link Navigasi -->
+      <div class="nav-links" id="nav-links">
         <a href="/">Home</a>
         <a href="/learn">Learn</a>
         <a href="/history" class="nav-active">History</a>
         <a href="/faq">FAQ</a>
+
+        <!-- Tombol login/register akan muncul di sini di mobile -->
+        <div
+          class="auth-buttons"
+          id="auth-buttons-mobile"
+          style="display: none"
+        ></div>
       </div>
-      <div class="auth-buttons" id="auth-buttons">
+
+      <!-- Tombol Login/Register untuk Layar Besar -->
+      <div class="auth-buttons" id="auth-buttons-desktop">
         <a href="/register" class="register-btn">Register</a>
         <a href="/login" class="login-btn">Log in</a>
       </div>
-      <div class="auth-user" id="auth-user" style="display: none;">
-        <span>Welcome, <span id="user-name">User</span>!</span>
-        <button id="logout-btn" style="margin-left: 15px; background: none; border: none; cursor: pointer; color: #f04b2f;">Logout</button>
-        <i class="fas fa-user-circle"></i>
+
+      <!-- Info Pengguna yang Sudah Login -->
+      <div class="auth-user" id="auth-user" style="display: none">
+        <span class="user-name"
+          >Welcome, <span id="user-name">User</span>!</span
+        >
+        <button id="logout-btn" class="logout-btn">Logout</button>
       </div>
+
+      <!-- Tombol Hamburger untuk Mobile -->
+      <button class="hamburger-menu" id="hamburger-menu">
+        <i class="bi bi-list"></i>
+      </button>
     </nav>
 
     <main>
       <section class="history-section">
-        <h2 class="history-title" style="text-align: center">Your Upload History</h2>
+        <h2 class="history-title" style="text-align: center">History</h2>
         <div class="history-grid" id="history-grid">
-          <p style="text-align: center;">Loading history...</p>
+          <p class="empty-message">Loading history...</p>
         </div>
       </section>
     </main>
@@ -47,35 +167,72 @@
     </footer>
 
     <script>
-      // --- Authentication Script ---
-      const username = localStorage.getItem('username');
-      const authButtons = document.getElementById('auth-buttons');
-      const authUser = document.getElementById('auth-user');
+      // --- Delete Video Function ---
+      async function deleteVideo(videoId, videoElement) {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to recover this video!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#c71f16",
+          cancelButtonColor: "#6c757d",
+          confirmButtonText: "Yes, delete it!",
+        });
 
-      if (username) {
-        document.getElementById('user-name').textContent = username;
-        authButtons.style.display = 'none';
-        authUser.style.display = 'flex';
-      } else {
-        authButtons.style.display = 'flex';
-        authUser.style.display = 'none';
+        if (result.isConfirmed) {
+          try {
+            const username = localStorage.getItem("username");
+            const response = await fetch(`/api/delete-video/${videoId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username }),
+            });
+
+            if (response.ok) {
+              // Remove the video element from DOM with animation
+              videoElement.style.transition = "all 0.3s ease";
+              videoElement.style.transform = "scale(0)";
+              videoElement.style.opacity = "0";
+
+              setTimeout(() => {
+                videoElement.remove();
+                // Check if grid is empty
+                const grid = document.getElementById("history-grid");
+                if (grid.children.length === 0) {
+                  grid.innerHTML =
+                    '<p class="empty-message">You have not uploaded any videos yet.</p>';
+                  grid.classList.add("empty-state");
+                }
+              }, 300);
+
+              Swal.fire("Deleted!", "Your video has been deleted.", "success");
+            } else {
+              const errorData = await response.json();
+              throw new Error(errorData.message || "Failed to delete video");
+            }
+          } catch (error) {
+            console.error("Delete error:", error);
+            Swal.fire(
+              "Error!",
+              "Failed to delete video: " + error.message,
+              "error"
+            );
+          }
+        }
       }
 
-      document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('username');
-        window.location.reload();
-      });
-    </script>
-    
-    <script>
       // --- History Loading Script ---
       async function loadHistory() {
         // Get the grid container
-        const grid = document.getElementById('history-grid');
-        const username = localStorage.getItem('username');
+        const grid = document.getElementById("history-grid");
+        const username = localStorage.getItem("username");
 
         if (!username) {
-          grid.innerHTML = '<p style="text-align:center;">Please log in to see your history.</p>';
+          grid.innerHTML =
+            '<p class="empty-message">Please log in to see your history.</p>';
+          grid.classList.add("empty-state");
           return;
         }
 
@@ -83,42 +240,100 @@
           const res = await fetch(`/api/history?username=${username}`);
           if (!res.ok) {
             const errorData = await res.json();
-            throw new Error(errorData.message || 'Failed to load history from server.');
+            throw new Error(
+              errorData.message || "Failed to load history from server."
+            );
           }
 
           const data = await res.json();
           if (!Array.isArray(data) || data.length === 0) {
-            grid.innerHTML = '<p style="text-align:center">You have not uploaded any videos yet.</p>';
+            grid.innerHTML =
+              '<p class="empty-message">You have not uploaded any videos yet.</p>';
+            grid.classList.add("empty-state");
             return;
           }
-          
-          // Clear "Loading..." message
-          grid.innerHTML = ''; 
 
-          data.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            
-            // PERUBAHAN: Menambahkan atribut `preload="metadata"` dan media fragment `#t=0.5`
-            // `preload="metadata"` meminta browser untuk mengambil info dasar video.
-            // `#t=0.5` menyarankan browser untuk menampilkan frame dari detik ke-0.5 sebagai poster.
+          // Clear "Loading..." message and remove empty state
+          grid.innerHTML = "";
+          grid.classList.remove("empty-state");
+
+          data.forEach((item) => {
+            const div = document.createElement("div");
+            div.className = "history-item";
+
+            const predictionText = item.prediction
+              ? `${item.prediction} (${(item.confidence * 100).toFixed(2)}%)`
+              : "Not available";
+
             div.innerHTML = `
-              <video controls preload="metadata" width="300">
-                <source src="/video/${item.filename}#t=0.5" type="${item.mimetype}">
-                Your browser does not support the video tag.
-              </video>
-              <p class="video-filename">${item.filename.substring(0, 20)}...</p>
+              <div class="video-wrapper">
+                <video controls preload="metadata" class="video-rounded">
+                  <source src="/video/${item.filename}#t=0.5" type="${item.mimetype}">
+                  Your browser does not support the video tag.
+                </video>    
+              </div>
+              <p class="video-predict">
+                <span class="prediction-text">
+                  <br>
+                  <b>Translation:</b> ${predictionText}
+                </span>
+                <button class="delete-btn" onclick="deleteVideo('${item._id}', this.closest('.history-item'))">
+                  <lord-icon
+                    src="https://cdn.lordicon.com/jzinekkv.json"
+                    trigger="click"
+                    state="morph-trash-in"
+                    colors="primary:#c71f16,secondary:#c71f16"
+                    class="delete-icon">
+                  </lord-icon>
+                </button>
+              </p>
             `;
             grid.appendChild(div);
           });
         } catch (err) {
-          console.error('Error loading history:', err);
-          grid.innerHTML = `<p style="color:red; text-align:center">Error: ${err.message}</p>`;
+          console.error("Error loading history:", err);
+          grid.innerHTML = `<p class="empty-message" style="color:red;">Error: ${err.message}</p>`;
+          grid.classList.add("empty-state");
         }
       }
 
       // Run the function after the page content is fully loaded
-      document.addEventListener('DOMContentLoaded', loadHistory);
+      document.addEventListener("DOMContentLoaded", loadHistory);
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburger = document.getElementById("hamburger-menu");
+        const navLinks = document.getElementById("nav-links");
+
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+
+        const username = localStorage.getItem("username");
+        const authButtonsDesktop = document.getElementById(
+          "auth-buttons-desktop"
+        );
+        const authButtonsMobile = document.getElementById(
+          "auth-buttons-mobile"
+        );
+        const authUser = document.getElementById("auth-user");
+
+        if (username) {
+          document.getElementById("user-name").textContent = username;
+          authButtonsDesktop.style.display = "none";
+          authButtonsMobile.style.display = "none";
+          authUser.style.display = "flex";
+        } else {
+          authButtonsDesktop.style.display = "flex";
+          authButtonsMobile.style.display = "flex";
+          authUser.style.display = "none";
+        }
+
+        document.getElementById("logout-btn").addEventListener("click", () => {
+          localStorage.removeItem("username");
+          window.location.reload();
+        });
+      });
     </script>
   </body>
 </html>

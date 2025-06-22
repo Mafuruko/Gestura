@@ -127,7 +127,6 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   padding: 20px;
-
 }
 
 .history-item {
@@ -142,7 +141,7 @@ body {
 }
 
 .history-title {
-font-family: "BeautiqueDisplay", sans-serif;
+  font-family: "BeautiqueDisplay", sans-serif;
   font-size: 40px;
   margin-bottom: 12px;
   color: #e64c2b;
@@ -190,4 +189,3 @@ font-family: "BeautiqueDisplay", sans-serif;
 .delete-btn:hover {
   text-decoration: underline;
 }
-
