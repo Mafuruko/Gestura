@@ -119,61 +119,90 @@
       <a href="https://lordicon.com/"></a>
     </footer>
   </body>
-  <!-- Tambahkan di bagian bawah sebelum </body> -->
 <script>
+  // Fungsi validasi email
+  function isValidEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
   document.querySelector('.login-btn-login').addEventListener('click', async () => {
     const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim(); // belum digunakan tapi bisa ditambah ke schema
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirm').value;
 
-    // Validasi dasar
+    // Validasi kosong
     if (!username || !email || !password || !confirmPassword) {
-      return alert('Please fill in all fields.');
+      return Swal.fire({
+        icon: 'warning',
+        title: 'Missing Fields',
+        text: 'Please fill in all fields.'
+      });
     }
 
+    // Validasi username tidak boleh ada spasi
+    if (username.includes(" ")) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Invalid Username',
+        text: 'Username must not contain spaces.'
+      });
+    }
+
+    // Validasi email
+    if (!isValidEmail(email)) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Invalid Email',
+        text: 'Please enter a valid email address.'
+      });
+    }
+
+    // Validasi password match
     if (password !== confirmPassword) {
-      return alert('Passwords do not match.');
+      return Swal.fire({
+        icon: 'error',
+        title: 'Password Mismatch',
+        text: 'Passwords do not match.'
+      });
     }
 
     try {
       const res = await fetch('http://localhost:3000/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, email, password }) // email tidak dikirim jika belum ada di schema
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
       });
 
       const data = await res.json();
 
-    if (res.ok) {
-      // SweetAlert2 success alert with auto-close
-      Swal.fire({
-        icon: 'success',
-        title: 'Registration Successful!',
-        text: 'Redirecting to login...',
-        timer: 2000, // 2 seconds
-        showConfirmButton: false,
-        timerProgressBar: true
-      });
+      if (res.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful!',
+          text: 'Redirecting to login...',
+          timer: 2000,
+          showConfirmButton: false,
+          timerProgressBar: true
+        });
 
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 2000);
-
-    } else {
-      // SweetAlert2 error alert
+        setTimeout(() => window.location.href = '/login', 2000);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: data.message || 'Something went wrong!'
+        });
+      }
+    } catch (err) {
+      console.error('Register error:', err);
       Swal.fire({
         icon: 'error',
-        title: 'Registration Failed',
-        text: data.message || 'Something went wrong!'
+        title: 'Server Error',
+        text: 'Please try again later.'
       });
     }
-  } catch (err) {
-    console.error('Register error:', err);
-    alert('Server error. Please try again later.');
-  }
-});
+  });
 </script>
 </html>

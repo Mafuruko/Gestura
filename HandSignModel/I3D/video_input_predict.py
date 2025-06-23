@@ -1,15 +1,18 @@
+import os
+import sys
 import cv2
 import torch
 import numpy as np
 import torch.nn.functional as F
-from collections import deque
 from pytorch_i3d import InceptionI3d
-import sys
 
 # ——— SETTING ———
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-WEIGHTS = 'FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
-LABELS  = 'wlasl_class_list.txt'
+
+# ⛑️ Path absolut berdasarkan lokasi script ini
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+WEIGHTS = os.path.join(BASE_DIR, 'FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt')
+LABELS  = os.path.join(BASE_DIR, 'wlasl_class_list.txt')
 
 # ——— MODEL LOAD ———
 model = InceptionI3d(400, in_channels=3)

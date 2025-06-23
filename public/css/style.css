@@ -379,10 +379,7 @@ footer {
   }
 }
 
-.faq-box {
-  max-height: none;
-  overflow: visible;
-}
+
 
 .faq-section {
   display: flex;
@@ -415,11 +412,15 @@ footer {
 }
 
 .faq-box {
-  width: 500px;
+  width: 50%;
+  min-width: 500px;
   padding: 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-height: none;
+  overflow: visible;
+
 }
 
 .faq-item {
@@ -689,20 +690,29 @@ video:-ms-fullscreen {
   box-shadow: none;
 }
 
-.faq-scroll {
-  max-height: 450px;
-  overflow-y: auto;
-  padding-right: 10px;
-  scroll-behavior: smooth;
-}
 
-.faq-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-.faq-scroll::-webkit-scrollbar-thumb {
-  background-color: #c6492d;
-  border-radius: 5px;
-}
+  .faq-scroll-wrapper {
+    max-height: 400px;             /* Batas tinggi area scroll */
+    overflow-y: auto;              /* Aktifkan scroll vertikal */
+    padding-right: 10px;           /* Agar tidak terlalu rapat dengan scrollbar */
+    margin-top: 20px;
+  }
+
+  /* Opsional: scrollbar yang lebih halus */
+  .faq-scroll-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .faq-scroll-wrapper::-webkit-scrollbar-track {
+    background: #f2efea;
+    border-radius: 10px;
+  }
+
+  .faq-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #c6492d;
+    border-radius: 10px;
+  }
+
 
 @media (min-width: 1600px) {
   .history-grid {

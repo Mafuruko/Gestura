@@ -17,7 +17,10 @@ const VideoSchema = new mongoose.Schema({
   filename: String,
   mimetype: String,
   data: Buffer,
-  uploadDate: { type: Date, default: Date.now }
+  prediction: String, 
+  confidence: Number,
+  uploadDate: { type: Date, default: Date.now() + 7 * 60 * 60 * 1000 }
 });
+
 
 module.exports = mongoose.model('Video', VideoSchema);

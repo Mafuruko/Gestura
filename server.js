@@ -10,6 +10,7 @@ const fs = require("fs");
 
 const User = require("./models/User");
 const Video = require("./models/Video");
+const Dictionary = require("./models/Dictionary");
 
 const app = express();
 app.use(bodyParser.json());
@@ -85,9 +86,9 @@ app.post("/upload", upload.single("video"), async (req, res) => {
     // Jalankan script Python
     const pythonScriptPath = path.join(
       __dirname,
-      "model/I3D/video_input_predict.py"
+      "HandSignModel/I3D/video_input_predict.py"
     );
-    const pythonCommand = `python "${pythonScriptPath}" "${tempPath}"`;
+    const pythonCommand = `python3 "${pythonScriptPath}" "${tempPath}"`;
 
     console.log("[PYTHON COMMAND]", pythonCommand);
 
@@ -271,6 +272,26 @@ app.get("/video/:filename", async (req, res) => {
   }
 });
 
+// app.get("/api/dictionary", async (req, res) => {
+//   try {
+//     const entries = await Dictionary.find().sort({ word: 1 });
+//     res.json(entries);
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to fetch dictionary", error: error.message });
+//   }
+// });
+
+app.get("/api/dictionary", async (req, res) => {
+  try {
+    const entries = await Dictionary.find().sort({ word: 1 });
+    console.log("[DICTIONARY ENTRIES]", entries); // Tambahkan ini
+    res.json(entries);
+  } catch (error) {
+    console.error("[DICTIONARY ERROR]", error);
+    res.status(500).json({ message: "Failed to fetch dictionary", error: error.message });
+  }
+});
+
 // === Serve Static Pages ===
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "index.html"))
@@ -290,3 +311,5 @@ app.get("/faq", (req, res) =>
 app.get("/history", (req, res) =>
   res.sendFile(path.join(__dirname, "public", "history.html"))
 );
+
+

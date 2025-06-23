@@ -33,33 +33,39 @@
   </head>
   <body>
     <nav>
-      <div class="logo-container"><a href="/"><img src="img/moon-1.png" alt="Gestura Logo" width="55px" height="55px" /></a> </div>
-      <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/learn">Learn</a>
-        <a href="/history">History</a>
-        <a href="/faq" class="nav-active">FAQ</a>
+      <div class="logo-container">
+        <a href="/"
+          ><img
+            src="img/moon-1.png"
+            alt="Gestura Logo"
+            width="55px"
+            height="55px"
+        /></a>
       </div>
-      <div class="auth-buttons" id="auth-buttons">
-        <a href="/register" class="register-btn">Register</a>
-        <a href="/login" class="login-btn">Log in</a>
-      </div>
-      <div class="auth-user" id="auth-user" style="display: none">
-        <span>Welcome, <span id="user-name">User</span>!</span>
-        <button
-          id="logout-btn"
-          style="
-            margin-left: 15px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #f04b2f;
-          "
-        >
-          Logout
-        </button>
-        <i class="fas fa-user-circle"></i>
-      </div>
+
+      <!-- Link Navigasi -->
+      <div class="nav-links" id="nav-links">
+      <a href="/">Home</a>
+      <a href="/learn">Learn</a>
+      <a href="/history">History</a>
+      <a href="/faq" class="nav-active">FAQ</a>
+      <div class="auth-buttons" id="auth-buttons-mobile" style="display: none"></div>
+    </div>
+
+    <div class="auth-buttons" id="auth-buttons-desktop">
+      <a href="/register" class="register-btn">Register</a>
+      <a href="/login" class="login-btn">Log in</a>
+    </div>
+
+    <div class="auth-user" id="auth-user" style="display: none">
+      <span class="user-name">Welcome, <span id="user-name">User</span>!</span>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+
+      <!-- Tombol Hamburger untuk Mobile -->
+      <button class="hamburger-menu" id="hamburger-menu">
+      <i class="bi bi-list"></i>
+    </button>
     </nav>
 
     <main>
@@ -67,6 +73,7 @@
         <div class="faq-box">
           <h2 class="faq-title">Frequently Asked Questions</h2>
 
+        <div class="faq-scroll-wrapper">
           <div class="faq-item">
             <div class="faq-question">
               <h3>What is Gestura?</h3>
@@ -168,7 +175,7 @@
               devices. You can download it from the App Store or Google Play.
             </p>
           </div>
-
+        </div>
         </div>
 
         <div class="logo-container">
@@ -190,26 +197,49 @@
       <p>&copy; Gestura 2025</p>
     </footer>
 
-    <script>
-      // --- Authentication Script ---
-      const username = localStorage.getItem('username');
-      const authButtons = document.getElementById('auth-buttons');
-      const authUser = document.getElementById('auth-user');
+<script>
+  const username = localStorage.getItem('username');
+  const authButtonsDesktop = document.getElementById('auth-buttons-desktop');
+  const authButtonsMobile = document.getElementById('auth-buttons-mobile');
+  const authUser = document.getElementById('auth-user');
 
-      if (username) {
-        document.getElementById('user-name').textContent = username;
-        authButtons.style.display = 'none';
-        authUser.style.display = 'flex';
+  function handleAuthDisplay() {
+    if (username) {
+      document.getElementById('user-name').textContent = username;
+      authButtonsDesktop.style.display = 'none';
+      authButtonsMobile.style.display = 'none';
+      authUser.style.display = 'flex';
+    } else {
+      authUser.style.display = 'none';
+      if (window.innerWidth <= 768) {
+        authButtonsDesktop.style.display = 'none';
+        authButtonsMobile.style.display = 'flex';
       } else {
-        authButtons.style.display = 'flex';
-        authUser.style.display = 'none';
+        authButtonsDesktop.style.display = 'flex';
+        authButtonsMobile.style.display = 'none';
       }
+    }
+  }
 
-      document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('username');
-        window.location.reload(); // refresh halaman jadi versi guest
-      });
-    </script>
+  handleAuthDisplay();
+  window.addEventListener('resize', handleAuthDisplay);
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem('username');
+    window.location.reload(); // refresh halaman jadi versi guest
+  });
+</script>
+<script>
+  // ✅ Hamburger menu functionality
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger-menu");
+    const navLinks = document.getElementById("nav-links");
+
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+  });
+</script>
 
     <script>
       // --- JavaScript for Dropdown Functionality ---

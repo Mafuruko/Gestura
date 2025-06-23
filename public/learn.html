@@ -254,19 +254,18 @@
   <body>
     <nav>
       <div class="logo-container">
-        <a href="/">
-          <img
+        <a href="/"
+          ><img
             src="img/moon-1.png"
             alt="Gestura Logo"
             width="55px"
             height="55px"
-          />
-        </a>
+        /></a>
       </div>
 
       <!-- Link Navigasi -->
       <div class="nav-links" id="nav-links">
-        <a href="/">Home</a>
+        <a href="/" >Home</a>
         <a href="/learn" class="nav-active">Learn</a>
         <a href="/history">History</a>
         <a href="/faq">FAQ</a>
@@ -276,8 +275,8 @@
           id="auth-buttons-mobile"
           style="display: none"
         >
-          <a href="/register" class="register-btn">Register</a>
-          <a href="/login" class="login-btn">Log in</a>
+          <!-- <a href="/register" class="register-btn">Register</a>
+           <a href="/login" class="login-btn">Log in</a> -->
         </div>
       </div>
 
@@ -306,39 +305,16 @@
         <div class="dictionary-box">
           <h2 class="dictionary-title">Dictionary List</h2>
           <div class="search-bar">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search sign language words..."
-            />
+            <input type="text" id="search-input" placeholder="Search sign language words..." />
             <button class="search-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-                />
-              </svg>
+              <i class="bi bi-search"></i>
             </button>
           </div>
-          <div class="dictionary-list" id="dictionary-list">
-            <!-- Dictionary items will be populated by JavaScript -->
-          </div>
+          <div class="dictionary-list" id="dictionary-list"></div>
         </div>
 
         <div class="video-box">
-          <iframe
-            id="video-frame"
-            src="https://www.youtube.com/embed/uKKvNqA9N20"
-            title="YouTube video player"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+          <iframe id="video-frame" src="https://www.youtube.com/embed/uKKvNqA9N20" frameborder="0" allowfullscreen></iframe>
           <p class="video-caption" id="video-caption">How to say: Thank you</p>
         </div>
       </section>
@@ -348,148 +324,107 @@
       <p>&copy; Gestura 2025</p>
     </footer>
 
-    <script>
-      // --- Skrip Menu Hamburger ---
-      document.addEventListener("DOMContentLoaded", () => {
-        const hamburger = document.getElementById("hamburger-menu");
-        const navLinks = document.getElementById("nav-links");
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  // === Hamburger Menu ===
+  const hamburger = document.getElementById("hamburger-menu");
+  const navLinks = document.getElementById("nav-links");
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
 
-        hamburger.addEventListener("click", () => {
-          navLinks.classList.toggle("active");
-        });
-      });
+  // === Auth Control ===
+  const username = localStorage.getItem("username");
+  const authButtonsDesktop = document.getElementById("auth-buttons-desktop");
+  const authButtonsMobile = document.getElementById("auth-buttons-mobile");
+  const authUser = document.getElementById("auth-user");
 
-      // ----- Logika Otentikasi Pengguna -----
-      const username = localStorage.getItem("username");
-      const authButtonsDesktop = document.getElementById(
-        "auth-buttons-desktop"
-      );
-      const authButtonsMobile = document.getElementById("auth-buttons-mobile");
-      const authUser = document.getElementById("auth-user");
+  if (username) {
+    document.getElementById("user-name").textContent = username;
+    authButtonsDesktop.style.display = "none";
+    authButtonsMobile.style.display = "none";
+    authUser.style.display = "flex";
+  } else {
+    authUser.style.display = "none";
+    if (window.innerWidth <= 768) {
+      authButtonsDesktop.style.display = "none";
+      authButtonsMobile.style.display = "flex";
+    } else {
+      authButtonsDesktop.style.display = "flex";
+      authButtonsMobile.style.display = "none";
+    }
+  }
 
-      if (username) {
-        document.getElementById("user-name").textContent = username;
-        authButtonsDesktop.style.display = "none";
-        authButtonsMobile.style.display = "none";
-        authUser.style.display = "flex";
-      } else {
-        authButtonsDesktop.style.display = "flex";
-        authButtonsMobile.style.display = "flex"; // Tampilkan di dalam menu mobile juga
-        authUser.style.display = "none";
-      }
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem("username");
+    window.location.reload();
+  });
 
-      document.getElementById("logout-btn").addEventListener("click", () => {
-        localStorage.removeItem("username");
-        window.location.reload();
-      });
+  // === Dictionary ===
+  let dictionary = [];
+  let filteredDictionary = [];
+  let currentActiveItem = null;
 
-      // Dictionary data with YouTube video IDs
-      const dictionary = [
-        { word: "Thank you", videoId: "uKKvNqA9N20" },
-        { word: "Hello", videoId: "dQw4w9WgXcQ" },
-        { word: "Amazing", videoId: "3JZ_D3ELwOQ" },
-        { word: "Good Morning", videoId: "ZZ5LpwO-An4" },
-        { word: "Please", videoId: "jNQXAC9IVRw" },
-        { word: "Sorry", videoId: "2vjPBrBU-TM" },
-        { word: "Yes", videoId: "y6120QOlsfU" },
-        { word: "No", videoId: "8UVNT4wvIGY" },
-        { word: "Help", videoId: "1w7OgIMMRc4" },
-        { word: "Water", videoId: "SlPhMPnQ58k" },
-        { word: "Food", videoId: "hFZFjoX2cGg" },
-        { word: "Love", videoId: "dQw4w9WgXcQ" },
-        { word: "Family", videoId: "3JZ_D3ELwOQ" },
-        { word: "Friend", videoId: "ZZ5LpwO-An4" },
-        { word: "Happy", videoId: "jNQXAC9IVRw" },
-        { word: "Sad", videoId: "2vjPBrBU-TM" },
-        { word: "Beautiful", videoId: "y6120QOlsfU" },
-        { word: "Good", videoId: "8UVNT4wvIGY" },
-        { word: "Bad", videoId: "1w7OgIMMRc4" },
-        { word: "Big", videoId: "SlPhMPnQ58k" },
-        { word: "Small", videoId: "hFZFjoX2cGg" },
-        { word: "Hot", videoId: "dQw4w9WgXcQ" },
-        { word: "Cold", videoId: "3JZ_D3ELwOQ" },
-        { word: "Today", videoId: "ZZ5LpwO-An4" },
-        { word: "Tomorrow", videoId: "jNQXAC9IVRw" },
-        { word: "Yesterday", videoId: "2vjPBrBU-TM" },
-        { word: "Time", videoId: "y6120QOlsfU" },
-        { word: "Money", videoId: "8UVNT4wvIGY" },
-        { word: "Work", videoId: "1w7OgIMMRc4" },
-        { word: "School", videoId: "SlPhMPnQ58k" },
-      ];
-
-      let filteredDictionary = [...dictionary];
-      let currentActiveItem = null;
-
-      // Dictionary functionality
-      function renderDictionary(items) {
-        const dictionaryList = document.getElementById("dictionary-list");
-        dictionaryList.innerHTML = "";
-
-        items.forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "dictionary-item";
-          div.textContent = item.word;
-          div.addEventListener("click", () => selectWord(item, div));
-          dictionaryList.appendChild(div);
-        });
-
-        // Auto-select first item if no item is currently active
-        if (items.length > 0 && !currentActiveItem) {
-          const firstItem = dictionaryList.firstChild;
-          selectWord(items[0], firstItem);
-        }
-      }
-
-      function selectWord(item, element) {
-        // Remove active class from previous item
-        if (currentActiveItem) {
-          currentActiveItem.classList.remove("active");
-        }
-
-        // Add active class to current item
-        element.classList.add("active");
-        currentActiveItem = element;
-
-        // Update video
-        const videoFrame = document.getElementById("video-frame");
-        const videoCaption = document.getElementById("video-caption");
-
-        videoFrame.src = `https://www.youtube.com/embed/${item.videoId}`;
-        videoCaption.textContent = `How to say: ${item.word}`;
-      }
-
-      function searchDictionary() {
-        const searchTerm = document
-          .getElementById("search-input")
-          .value.toLowerCase();
-        filteredDictionary = dictionary.filter((item) =>
-          item.word.toLowerCase().includes(searchTerm)
-        );
-        currentActiveItem = null;
-        renderDictionary(filteredDictionary);
-      }
-
-      // Search functionality
-      document
-        .getElementById("search-input")
-        .addEventListener("input", searchDictionary);
-
-      // Search button click
-      document
-        .querySelector(".search-icon")
-        .addEventListener("click", searchDictionary);
-
-      // Enter key search
-      document
-        .getElementById("search-input")
-        .addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            searchDictionary();
-          }
-        });
-
-      // Initial render
+  async function loadDictionary() {
+    try {
+      const res = await fetch("/api/dictionary");
+      const data = await res.json();
+      dictionary = data.map(item => ({
+        word: item.word,
+        videoId: item.videoId
+      }));
+      filteredDictionary = [...dictionary];
       renderDictionary(filteredDictionary);
-    </script>
+    } catch (err) {
+      console.error("[LOAD ERROR]", err);
+    }
+  }
+
+  function renderDictionary(items) {
+    const dictionaryList = document.getElementById("dictionary-list");
+    dictionaryList.innerHTML = "";
+
+    items.forEach((item) => {
+      const div = document.createElement("div");
+      div.className = "dictionary-item";
+      div.textContent = item.word;
+      div.addEventListener("click", () => selectWord(item, div));
+      dictionaryList.appendChild(div);
+    });
+
+    if (items.length > 0 && !currentActiveItem) {
+      const firstItem = dictionaryList.firstChild;
+      selectWord(items[0], firstItem);
+    }
+  }
+
+  function selectWord(item, element) {
+    if (currentActiveItem) currentActiveItem.classList.remove("active");
+    element.classList.add("active");
+    currentActiveItem = element;
+
+    document.getElementById("video-frame").src =
+      `https://www.youtube.com/embed/${item.videoId}`;
+    document.getElementById("video-caption").textContent = `How to say: ${item.word}`;
+  }
+
+  function searchDictionary() {
+    const term = document.getElementById("search-input").value.toLowerCase();
+    filteredDictionary = dictionary.filter((item) =>
+      item.word.toLowerCase().includes(term)
+    );
+    currentActiveItem = null;
+    renderDictionary(filteredDictionary);
+  }
+
+  document.getElementById("search-input").addEventListener("input", searchDictionary);
+  document.querySelector(".search-icon").addEventListener("click", searchDictionary);
+  document.getElementById("search-input").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") searchDictionary();
+  });
+
+  loadDictionary();
+});
+</script>
   </body>
 </html>
