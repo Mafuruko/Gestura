@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestura - Speak Through Hands, Understand Each Other</title>
     <link rel="stylesheet" href="css/style.css" />
+    <!-- Bootstrap Icons CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
     <style>
       /* --- CSS for Dropdown Functionality --- */
       .faq-question {
@@ -28,7 +33,41 @@
         padding-bottom: 15px;
         transition: max-height 0.4s ease-in, padding 0.3s ease-in, margin 0.3s ease-in;
       }
-      /* ------------------------------------ */
+      
+      /* Make sure this part is in place */
+@media (max-width: 768px) {
+  .nav-links,
+  .auth-buttons {
+    display: none; /* Hide links and buttons on mobile */
+  }
+
+  .hamburger-menu {
+    display: block; /* Show hamburger icon */
+  }
+
+  .nav-links.active {
+    display: flex; /* Show the menu when hamburger is clicked */
+    flex-direction: column;
+    position: absolute;
+    top: 100%; /* Position below navbar */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .auth-user {
+    margin-left: auto; /* Move to right if hamburger is active */
+  }
+}
     </style>
   </head>
   <body>
@@ -45,27 +84,39 @@
 
       <!-- Link Navigasi -->
       <div class="nav-links" id="nav-links">
-      <a href="/">Home</a>
-      <a href="/learn">Learn</a>
-      <a href="/history">History</a>
-      <a href="/faq" class="nav-active">FAQ</a>
-      <div class="auth-buttons" id="auth-buttons-mobile" style="display: none"></div>
-    </div>
+        <a href="/" >Home</a>
+        <a href="/learn">Learn</a>
+        <a href="/history">History</a>
+        <a href="/faq"class="nav-active">FAQ</a>
+        <!-- Tombol login/register akan muncul di sini di mobile -->
+        <div
+          class="auth-buttons"
+          id="auth-buttons-mobile"
+          style="display: none"
+        >
+          <!-- <a href="/register" class="register-btn">Register</a>
+           <a href="/login" class="login-btn">Log in</a> -->
+        </div>
+      </div>
 
-    <div class="auth-buttons" id="auth-buttons-desktop">
-      <a href="/register" class="register-btn">Register</a>
-      <a href="/login" class="login-btn">Log in</a>
-    </div>
+      <!-- Tombol Login/Register untuk Layar Besar -->
+      <div class="auth-buttons" id="auth-buttons-desktop">
+        <a href="/register" class="register-btn">Register</a>
+        <a href="/login" class="login-btn">Log in</a>
+      </div>
 
-    <div class="auth-user" id="auth-user" style="display: none">
-      <span class="user-name">Welcome, <span id="user-name">User</span>!</span>
-      <button id="logout-btn" class="logout-btn">Logout</button>
-    </div>
+      <!-- Info Pengguna yang Sudah Login -->
+      <div class="auth-user" id="auth-user" style="display: none">
+        <span class="user-name"
+          >Welcome, <span id="user-name">User</span>!</span
+        >
+        <button id="logout-btn" class="logout-btn">Logout</button>
+      </div>
 
       <!-- Tombol Hamburger untuk Mobile -->
       <button class="hamburger-menu" id="hamburger-menu">
-      <i class="bi bi-list"></i>
-    </button>
+        <i class="bi bi-list"></i>
+      </button>
     </nav>
 
     <main>
@@ -198,47 +249,48 @@
     </footer>
 
 <script>
-  const username = localStorage.getItem('username');
-  const authButtonsDesktop = document.getElementById('auth-buttons-desktop');
-  const authButtonsMobile = document.getElementById('auth-buttons-mobile');
-  const authUser = document.getElementById('auth-user');
+      // --- Skrip Menu Hamburger ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const hamburger = document.getElementById("hamburger-menu");
+        const navLinks = document.getElementById("nav-links");
 
-  function handleAuthDisplay() {
-    if (username) {
-      document.getElementById('user-name').textContent = username;
-      authButtonsDesktop.style.display = 'none';
-      authButtonsMobile.style.display = 'none';
-      authUser.style.display = 'flex';
-    } else {
-      authUser.style.display = 'none';
-      if (window.innerWidth <= 768) {
-        authButtonsDesktop.style.display = 'none';
-        authButtonsMobile.style.display = 'flex';
+        hamburger.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+      });
+
+      // ----- Logika Otentikasi Pengguna -----
+      const username = localStorage.getItem("username");
+      const authButtonsDesktop = document.getElementById(
+        "auth-buttons-desktop"
+      );
+      const authButtonsMobile = document.getElementById("auth-buttons-mobile");
+      const authUser = document.getElementById("auth-user");
+
+      if (username) {
+        document.getElementById("user-name").textContent = username;
+        authButtonsDesktop.style.display = "none";
+        authButtonsMobile.style.display = "none";
+        authUser.style.display = "flex";
       } else {
-        authButtonsDesktop.style.display = 'flex';
-        authButtonsMobile.style.display = 'none';
+        authButtonsDesktop.style.display = "flex";
+        authButtonsMobile.style.display = "flex"; // Tampilkan di dalam menu mobile juga
+        authUser.style.display = "none";
       }
-    }
-  }
 
-  handleAuthDisplay();
-  window.addEventListener('resize', handleAuthDisplay);
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("username");
+        window.location.reload();
+      });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('username');
-    window.location.reload(); // refresh halaman jadi versi guest
-  });
-</script>
-<script>
-  // ✅ Hamburger menu functionality
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.getElementById("hamburger-menu");
-    const navLinks = document.getElementById("nav-links");
+handleAuthDisplay();
 
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-    });
-  });
+window.addEventListener("resize", handleAuthDisplay);
+
+document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("username");
+  window.location.reload();
+});
 </script>
 
     <script>

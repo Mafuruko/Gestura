@@ -83,65 +83,77 @@ app.post("/upload", upload.single("video"), async (req, res) => {
       });
     }
 
-    // Jalankan script Python
-    const pythonScriptPath = path.join(
-      __dirname,
-      "HandSignModel/I3D/video_input_predict.py"
-    );
-    const pythonCommand = `python "${pythonScriptPath}" "${tempPath}"`;
-
-    console.log("[PYTHON COMMAND]", pythonCommand);
-
-    exec(pythonCommand, { timeout: 60000 }, async (error, stdout, stderr) => {
-      // Clean up temporary file
-      try {
-        if (fs.existsSync(tempPath)) {
-          fs.unlinkSync(tempPath);
-        }
-      } catch (cleanupError) {
-        console.error("[CLEANUP ERROR]", cleanupError);
-      }
-
-      if (error) {
-        console.error("[PYTHON ERROR]", error);
-        console.error("[PYTHON STDERR]", stderr);
+    // Check which Python version is available
+    exec("command -v python3 || command -v python", (error, stdout, stderr) => {
+      if (error || !stdout) {
+        console.error("Python not found. Please install Python.");
         return res.status(500).json({
-          message: "Python script failed",
-          error: stderr || error.message,
+          message: "Python not found. Please install Python.",
         });
       }
 
-      console.log("[PYTHON OUTPUT]", stdout);
+      const pythonCommand = `python3 "${path.join(
+        __dirname,
+        "HandSignModel/I3D/video_input_predict.py"
+      )}" "${tempPath}"`;
 
-      try {
-        // Ekstrak hasil prediksi
-        const match = stdout.match(
-          /\[RESULT\] Terdeteksi: \d*\s*(.+?) \(([\d.]+)%\)/
-        );
-        const label = match?.[1]?.trim() || "Unknown";
-        const confidence = parseFloat(match?.[2] || "0") / 100;
+      console.log("[PYTHON COMMAND]", pythonCommand);
 
-        // Tambahkan hasil prediksi ke dokumen
-        saved.prediction = label;
-        saved.confidence = confidence;
-        await saved.save();
+      // Run the Python command
+      exec(pythonCommand, { timeout: 60000 }, async (error, stdout, stderr) => {
+        // Clean up temporary file
+        try {
+          if (fs.existsSync(tempPath)) {
+            fs.unlinkSync(tempPath);
+          }
+        } catch (cleanupError) {
+          console.error("[CLEANUP ERROR]", cleanupError);
+        }
 
-        return res.status(201).json({
-          message: "Upload and processing successful!",
-          prediction: label,
-          confidence: confidence,
-          file: { filename: saved.filename, id: saved._id },
-        });
-      } catch (parseError) {
-        console.error("[PARSE ERROR]", parseError);
-        // Even if parsing fails, return success with default values
-        return res.status(201).json({
-          message: "Upload successful, but prediction parsing failed",
-          prediction: "Processing Error",
-          confidence: 0,
-          file: { filename: saved.filename, id: saved._id },
-        });
-      }
+        if (error) {
+          console.error("[PYTHON ERROR]", error);
+          console.error("[PYTHON STDERR]", stderr);
+          // Delete the video from DB if prediction fails
+          await Video.findByIdAndDelete(saved._id);
+          return res.status(500).json({
+            message: "Python script failed",
+            error: stderr || error.message,
+          });
+        }
+
+        console.log("[PYTHON OUTPUT]", stdout);
+
+        try {
+          // Ekstrak hasil prediksi
+          const match = stdout.match(
+            /\[RESULT\] Terdeteksi: \d*\s*(.+?) \(([\d.]+)%\)/
+          );
+          const label = match?.[1]?.trim() || "Unknown";
+          const confidence = parseFloat(match?.[2] || "0") / 100;
+
+          // Tambahkan hasil prediksi ke dokumen
+          saved.prediction = label;
+          saved.confidence = confidence;
+          await saved.save();
+
+          return res.status(201).json({
+            message: "Upload and processing successful!",
+            prediction: label,
+            confidence: confidence,
+            file: { filename: saved.filename, id: saved._id },
+          });
+        } catch (parseError) {
+          console.error("[PARSE ERROR]", parseError);
+          // Even if parsing fails, delete video from DB and return default values
+          await Video.findByIdAndDelete(saved._id);
+          return res.status(500).json({
+            message: "Upload successful, but prediction parsing failed",
+            prediction: "Processing Error",
+            confidence: 0,
+            file: { filename: saved.filename, id: saved._id },
+          });
+        }
+      });
     });
   } catch (err) {
     console.error("[UPLOAD ERROR]", err);
