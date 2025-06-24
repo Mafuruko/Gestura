@@ -168,60 +168,72 @@
 
     <script>
       // --- Delete Video Function ---
-      async function deleteVideo(videoId, videoElement) {
-        const result = await Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to recover this video!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#c71f16",
-          cancelButtonColor: "#6c757d",
-          confirmButtonText: "Yes, delete it!",
-        });
+// --- Delete Video Function ---
+async function deleteVideo(videoId, videoElement) {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to recover this video!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#6c757d",  // Default color for confirm (Yes)
+    cancelButtonColor: "#c71f16",  // Highlight color for cancel (No)
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",    // Custom text for cancel button
+  });
 
-        if (result.isConfirmed) {
-          try {
-            const username = localStorage.getItem("username");
-            const response = await fetch(`/api/delete-video/${videoId}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ username }),
-            });
+  if (result.isConfirmed) {
+    try {
+      const username = localStorage.getItem("username");
+      const response = await fetch(`/api/delete-video/${videoId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
 
-            if (response.ok) {
-              // Remove the video element from DOM with animation
-              videoElement.style.transition = "all 0.3s ease";
-              videoElement.style.transform = "scale(0)";
-              videoElement.style.opacity = "0";
+      if (response.ok) {
+        // Remove the video element from DOM with animation
+        videoElement.style.transition = "all 0.3s ease";
+        videoElement.style.transform = "scale(0)";
+        videoElement.style.opacity = "0";
 
-              setTimeout(() => {
-                videoElement.remove();
-                // Check if grid is empty
-                const grid = document.getElementById("history-grid");
-                if (grid.children.length === 0) {
-                  grid.innerHTML =
-                    '<p class="empty-message">You have not uploaded any videos yet.</p>';
-                  grid.classList.add("empty-state");
-                }
-              }, 300);
-
-              Swal.fire("Deleted!", "Your video has been deleted.", "success");
-            } else {
-              const errorData = await response.json();
-              throw new Error(errorData.message || "Failed to delete video");
-            }
-          } catch (error) {
-            console.error("Delete error:", error);
-            Swal.fire(
-              "Error!",
-              "Failed to delete video: " + error.message,
-              "error"
-            );
+        setTimeout(() => {
+          videoElement.remove();
+          // Check if grid is empty
+          const grid = document.getElementById("history-grid");
+          if (grid.children.length === 0) {
+            grid.innerHTML =
+              '<p class="empty-message">You have not uploaded any videos yet.</p>';
+            grid.classList.add("empty-state");
           }
-        }
+        }, 300);
+
+        // Success toast without requiring an "OK" button
+        Swal.fire({
+          icon: "success",
+          title: "Video Deleted",
+          text: "Your video has been successfully deleted.",
+          toast: true,  // Show as toast notification
+          position: 'top-end',  // Position on the screen
+          showConfirmButton: false,  // No "OK" button
+          timer: 1500,  // Time in milliseconds before the toast disappears
+          timerProgressBar: true,  // Show progress bar
+        });
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete video");
       }
+    } catch (error) {
+      console.error("Delete error:", error);
+      Swal.fire(
+        "Error!",
+        "Failed to delete video: " + error.message,
+        "error"
+      );
+    }
+  }
+}
 
       // --- History Loading Script ---
       async function loadHistory() {
