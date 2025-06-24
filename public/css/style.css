@@ -379,8 +379,6 @@ footer {
   }
 }
 
-
-
 .faq-section {
   display: flex;
   justify-content: space-between;
@@ -420,12 +418,12 @@ footer {
   gap: 24px;
   max-height: none;
   overflow: visible;
-
 }
 
 .faq-item {
   border-bottom: 3px solid #c6492d;
   padding-bottom: 16px;
+  padding-top: 16px;
 }
 
 .faq-question {
@@ -690,29 +688,27 @@ video:-ms-fullscreen {
   box-shadow: none;
 }
 
+.faq-scroll-wrapper {
+  max-height: 400px; /* Batas tinggi area scroll */
+  overflow-y: auto; /* Aktifkan scroll vertikal */
+  padding-right: 10px; /* Agar tidak terlalu rapat dengan scrollbar */
+  margin-top: 20px;
+}
 
-  .faq-scroll-wrapper {
-    max-height: 400px;             /* Batas tinggi area scroll */
-    overflow-y: auto;              /* Aktifkan scroll vertikal */
-    padding-right: 10px;           /* Agar tidak terlalu rapat dengan scrollbar */
-    margin-top: 20px;
-  }
+/* Opsional: scrollbar yang lebih halus */
+.faq-scroll-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
 
-  /* Opsional: scrollbar yang lebih halus */
-  .faq-scroll-wrapper::-webkit-scrollbar {
-    width: 8px;
-  }
+.faq-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f2efea;
+  border-radius: 10px;
+}
 
-  .faq-scroll-wrapper::-webkit-scrollbar-track {
-    background: #f2efea;
-    border-radius: 10px;
-  }
-
-  .faq-scroll-wrapper::-webkit-scrollbar-thumb {
-    background: #c6492d;
-    border-radius: 10px;
-  }
-
+.faq-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #c6492d;
+  border-radius: 10px;
+}
 
 @media (min-width: 1600px) {
   .history-grid {

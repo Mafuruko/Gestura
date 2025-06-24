@@ -88,7 +88,7 @@ app.post("/upload", upload.single("video"), async (req, res) => {
       __dirname,
       "HandSignModel/I3D/video_input_predict.py"
     );
-    const pythonCommand = `python3 "${pythonScriptPath}" "${tempPath}"`;
+    const pythonCommand = `python "${pythonScriptPath}" "${tempPath}"`;
 
     console.log("[PYTHON COMMAND]", pythonCommand);
 
