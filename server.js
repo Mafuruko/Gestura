@@ -45,61 +45,145 @@ const upload = multer({
 app.post("/upload", upload.single("video"), async (req, res) => {
   try {
     const { username } = req.body;
-    if (!req.file || !username)
-      return res.status(400).json({ message: "Missing file or username." });
 
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ message: "User not found." });
+    // If there is no file, or the video is missing, return an error.
+    if (!req.file)
+      return res.status(400).json({ message: "Missing video file." });
 
-    // Simpan ke database (sementara tanpa prediksi)
-    const newVideo = new Video({
-      user: user._id,
-      filename: req.file.originalname,
-      mimetype: req.file.mimetype,
-      data: req.file.buffer,
-    });
+    // If no username, do not store the video in the database
+    if (!username) {
+      // Store file temporarily and run the prediction model
+      const tempDir = path.join(__dirname, "temp");
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
 
-    const saved = await newVideo.save();
+      // Save file temporarily on the server
+      const tempPath = path.join(
+        tempDir,
+        `temp_${req.file.originalname}`
+      );
 
-    // Ensure temp directory exists
-    const tempDir = path.join(__dirname, "temp");
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    // Simpan file ke disk sementara
-    const tempPath = path.join(
-      tempDir,
-      `${saved._id}_${req.file.originalname}`
-    );
-
-    try {
-      fs.writeFileSync(tempPath, req.file.buffer);
-    } catch (writeError) {
-      console.error("[FILE WRITE ERROR]", writeError);
-      return res.status(500).json({
-        message: "Failed to write temporary file",
-        error: writeError.message,
-      });
-    }
-
-    // Check which Python version is available
-    exec("command -v python3 || command -v python", (error, stdout, stderr) => {
-      if (error || !stdout) {
-        console.error("Python not found. Please install Python.");
+      try {
+        fs.writeFileSync(tempPath, req.file.buffer);
+      } catch (writeError) {
+        console.error("[FILE WRITE ERROR]", writeError);
         return res.status(500).json({
-          message: "Python not found. Please install Python.",
+          message: "Failed to write temporary file",
+          error: writeError.message,
         });
       }
 
-      const pythonCommand = `python3 "${path.join(
+      // Check which Python version is available
+      exec("command -v python3 || command -v python", (error, stdout, stderr) => {
+        if (error || !stdout) {
+          console.error("Python not found. Please install Python.");
+          return res.status(500).json({
+            message: "Python not found. Please install Python.",
+          });
+        }
+
+        const pythonCommand = `python3 "${path.join(
+          __dirname,
+          "HandSignModel/I3D/video_input_predict.py"
+        )}" "${tempPath}"`;
+
+        console.log("[PYTHON COMMAND]", pythonCommand);
+
+        // Run the Python command
+        exec(pythonCommand, { timeout: 60000 }, async (error, stdout, stderr) => {
+          // Clean up temporary file
+          try {
+            if (fs.existsSync(tempPath)) {
+              fs.unlinkSync(tempPath);
+            }
+          } catch (cleanupError) {
+            console.error("[CLEANUP ERROR]", cleanupError);
+          }
+
+          if (error) {
+            console.error("[PYTHON ERROR]", error);
+            console.error("[PYTHON STDERR]", stderr);
+            return res.status(500).json({
+              message: "Python script failed",
+              error: stderr || error.message,
+            });
+          }
+
+          console.log("[PYTHON OUTPUT]", stdout);
+
+          try {
+            // Ekstrak hasil prediksi
+            const match = stdout.match(
+              /\[RESULT\] Terdeteksi: \d*\s*(.+?) \(([\d.]+)%\)/
+            );
+            const label = match?.[1]?.trim() || "Unknown";
+            const confidence = parseFloat(match?.[2] || "0") / 100;
+
+            // Return the result to the client without saving it to the database
+            return res.status(201).json({
+              message: "Upload and processing successful!",
+              prediction: label,
+              confidence: confidence,
+              file: { filename: req.file.originalname },
+            });
+          } catch (parseError) {
+            console.error("[PARSE ERROR]", parseError);
+            return res.status(500).json({
+              message: "Upload successful, but prediction parsing failed",
+              prediction: "Processing Error",
+              confidence: 0,
+              file: { filename: req.file.originalname },
+            });
+          }
+        });
+      });
+    } else {
+      // If username exists, proceed with saving the video to the DB (for logged-in users)
+      const user = await User.findOne({ username });
+      if (!user) return res.status(404).json({ message: "User not found." });
+
+      // Save video to the database
+      const newVideo = new Video({
+        user: user._id,
+        filename: req.file.originalname,
+        mimetype: req.file.mimetype,
+        data: req.file.buffer,
+      });
+
+      const saved = await newVideo.save();
+
+      // Ensure temp directory exists
+      const tempDir = path.join(__dirname, "temp");
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+
+      // Save file to disk temporarily
+      const tempPath = path.join(
+        tempDir,
+        `${saved._id}_${req.file.originalname}`
+      );
+
+      try {
+        fs.writeFileSync(tempPath, req.file.buffer);
+      } catch (writeError) {
+        console.error("[FILE WRITE ERROR]", writeError);
+        return res.status(500).json({
+          message: "Failed to write temporary file",
+          error: writeError.message,
+        });
+      }
+
+      // Run the Python prediction script
+      const pythonScriptPath = path.join(
         __dirname,
         "HandSignModel/I3D/video_input_predict.py"
-      )}" "${tempPath}"`;
+      );
+      const pythonCommand = `python3 "${pythonScriptPath}" "${tempPath}"`;
 
       console.log("[PYTHON COMMAND]", pythonCommand);
 
-      // Run the Python command
       exec(pythonCommand, { timeout: 60000 }, async (error, stdout, stderr) => {
         // Clean up temporary file
         try {
@@ -154,7 +238,7 @@ app.post("/upload", upload.single("video"), async (req, res) => {
           });
         }
       });
-    });
+    }
   } catch (err) {
     console.error("[UPLOAD ERROR]", err);
     res.status(500).json({ message: "Upload failed.", error: err.message });
@@ -259,9 +343,8 @@ app.get("/api/history", async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const videos = await Video.find({ user: user._id }).sort({
-      uploadDate: -1,
-    });
+    // Fetch videos and sort by upload date, descending order
+    const videos = await Video.find({ user: user._id }).sort({ uploadDate: -1 });  // Sort by `uploadDate` in descending order
     res.json(videos);
   } catch (error) {
     console.error("[HISTORY ERROR]", error);
@@ -284,14 +367,6 @@ app.get("/video/:filename", async (req, res) => {
   }
 });
 
-// app.get("/api/dictionary", async (req, res) => {
-//   try {
-//     const entries = await Dictionary.find().sort({ word: 1 });
-//     res.json(entries);
-//   } catch (error) {
-//     res.status(500).json({ message: "Failed to fetch dictionary", error: error.message });
-//   }
-// });
 
 app.get("/api/dictionary", async (req, res) => {
   try {

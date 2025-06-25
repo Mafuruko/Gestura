@@ -537,12 +537,30 @@
         }
       });
 
-      // Save to history (placeholder functionality)
-      saveToHistoryBtn.addEventListener("click", () => {
-        // You can implement save to history logic here
-        // alert("Saved to history!");
-        hideUploadModal();
-      });
+      // Save to history button functionality
+// Save to history button functionality
+saveToHistoryBtn.addEventListener("click", () => {
+  // Check if the user is logged in by looking for the username in localStorage
+  const username = localStorage.getItem("username");
+
+  if (!username) {
+    hideUploadModal(); // Close the modal
+    // If not logged in, show an alert
+    Swal.fire({
+      icon: "warning",
+      title: "You must login first",
+      text: "Please log in to save the video to history.",
+    });
+    return;
+  }
+
+  // If logged in, proceed with saving the video to history (you can implement this logic here)
+  // Example: Send a request to save the video to the database, or update the UI accordingly
+  
+  hideUploadModal(); // Close the modal
+
+
+});
 
       // ----- Logika Upload Terpadu -----
       const uploadButton = document.getElementById("upload-button");
